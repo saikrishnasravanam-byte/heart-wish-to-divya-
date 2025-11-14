@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>For You ❤️</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #ffb6c1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            font-family: 'Arial', sans-serif;
+        }
+
+        #message {
+            position: absolute;
+            top: 30px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            text-shadow: 2px 2px 5px #b30059;
+        }
+
+        #name {
+            position: absolute;
+            top: 80px;
+            font-size: 24px;
+            color: #fff;
+            text-align: center;
+            width: 100%;
+            text-shadow: 1px 1px 3px #b30059;
+        }
+
+        #secretBtn {
+            position: absolute;
+            bottom: 50px;
+            padding: 10px 20px;
+            font-size: 20px;
+            background-color: #ff69b4;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 2px 2px 5px #b30059;
+        }
+
+        #secretBtn:hover {
+            background-color: #ff1493;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="message"> Many more happy returns Nanna.God bless you.You make my world brighter since the day i met you ❤️
+    </div>
+    <div id="name">To: Divya Sree</div>
+    <canvas id="heartCanvas"></canvas>
+    <button id="secretBtn">Open My Surprise 🎁</button>
+
+    <script>
+        const canvas = document.getElementById('heartCanvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let hue = 0;
+        let scale = 1;
+        let scaleDirection = 0.02;
+
+        // Falling hearts
+        let smallHearts = [];
+        for (let i = 0; i < 50; i++) {
+            smallHearts.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 10 + 5,
+                speed: Math.random() * 1 + 0.5
+            });
+        }
+
+        function drawHeart(x, y, size) {
+            ctx.beginPath();
+            ctx.moveTo(x, y);
+            ctx.bezierCurveTo(x, y - size / 2, x - size, y - size / 2, x - size, y);
+            ctx.bezierCurveTo(x - size, y + size / 2, x, y + size, x, y + size * 1.5);
+            ctx.bezierCurveTo(x, y + size, x + size, y + size / 2, x + size, y);
+            ctx.bezierCurveTo(x + size, y - size / 2, x, y - size / 2, x, y);
+            ctx.closePath();
+            ctx.fillStyle = `hsl(${hue},80%,60%)`;
+            ctx.fill();
+        }
+
+        function drawSmallHearts() {
+            smallHearts.forEach(h => {
+                ctx.beginPath();
+                ctx.arc(h.x, h.y, h.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,182,193,0.8)';
+                ctx.fill();
+                h.y += h.speed;
+                if (h.y > canvas.height) h.y = -10;
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Falling small hearts
+            drawSmallHearts();
+
+            // Beating large heart
+            drawHeart(canvas.width / 2, canvas.height / 2, 100 * scale);
+
+            // Heart scale animation
+            scale += scaleDirection;
+            if (scale > 1.1 || scale < 0.9) scaleDirection *= -1;
+
+            hue += 1;
+            if (hue > 360) hue = 0;
+
+            requestAnimationFrame(animate);
+        }
+
+        animate();
+
+        // Button action
+        document.getElementById('secretBtn').addEventListener('click', () => {
+            window.open('https://www.youtube.com/watch?v=0K8qu5H4oXk&list=RD0K8qu5H4oXk&start_radio=1');
+        });
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    </script>
+</body>
+
+</html>
